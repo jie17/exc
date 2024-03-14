@@ -170,6 +170,15 @@ where
                     )))
                 }
             }
+            HttpRequest::PrivatePost(post) => {
+                if let Some(key) = self.key.as_ref() {
+                    post.to_request(&self.host, key)
+                } else {
+                    Err(ExchangeError::KeyError(anyhow::anyhow!(
+                        "key has not been set"
+                    )))
+                }
+            }
         };
         match req {
             Ok(mut req) => {
